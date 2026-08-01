@@ -8,7 +8,7 @@ const multer = require("multer");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 8000;
 
 // Multer Storage Configuration
 const storage = multer.diskStorage({
