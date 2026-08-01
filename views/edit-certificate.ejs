@@ -1,0 +1,56 @@
+<%- include("partials/header", { title: "Edit Certificate" }) %>
+
+<div class="container py-5 text-white">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card bg-dark text-white border-secondary p-4 shadow">
+        <h3 class="fw-bold mb-4 text-warning">Edit Certificate</h3>
+
+        <!-- 1. enctype="multipart/form-data" जोडले आहे -->
+        <form action="/edit-certificate/<%= certificate.id %>" method="POST" enctype="multipart/form-data">
+          
+          <div class="mb-3">
+            <label class="form-label text-secondary">Certificate Title</label>
+            <input type="text" name="title" class="form-control bg-dark text-white border-secondary" value="<%= certificate.title %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-secondary">Organization</label>
+            <input type="text" name="organization" class="form-control bg-dark text-white border-secondary" value="<%= certificate.organization %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-secondary">Issue Date</label>
+            <input type="text" name="issue_date" class="form-control bg-dark text-white border-secondary" value="<%= certificate.issue_date %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-secondary">Credential Link (Optional)</label>
+            <input type="text" name="credential_url" class="form-control bg-dark text-white border-secondary" value="<%= certificate.credential_url || '' %>">
+          </div>
+
+          <!-- 2. Text Input ऐवजी Upload Certificate Image पर्याय -->
+          <div class="mb-4">
+            <label class="form-label text-secondary">Update Certificate Image</label>
+            
+            <% if (certificate.certificate) { %>
+              <div class="mb-2">
+                <small class="text-info">Current File: </small>
+                <a href="<%= certificate.certificate %>" target="_blank" class="text-warning text-decoration-none">View Current Certificate</a>
+              </div>
+            <% } %>
+
+            <input type="file" name="certificate" class="form-control bg-dark text-white border-secondary" accept="image/*,.pdf">
+            <small class="text-muted fs-7">Select a new file only if you want to replace the current image.</small>
+          </div>
+
+          <button type="submit" class="btn btn-warning w-100 fw-bold">Update Certificate</button>
+          <a href="/dashboard" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

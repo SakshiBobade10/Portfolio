@@ -1,0 +1,58 @@
+<%- include("partials/header", { title: "Edit Internship" }) %>
+
+<div class="container py-5 text-white">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card bg-dark text-white border-secondary p-4 shadow">
+        <h3 class="fw-bold mb-4 text-warning">Edit Internship</h3>
+
+        <!-- 1. enctype="multipart/form-data" जोडले आहे -->
+        <form action="/edit-internship/<%= internship.id %>" method="POST" enctype="multipart/form-data">
+          <!-- Role -->
+          <div class="mb-3">
+            <label class="form-label text-secondary">Role / Position</label>
+            <input type="text" name="role" class="form-control bg-dark text-white border-secondary" value="<%= internship.role %>" required>
+          </div>
+
+          <!-- Company -->
+          <div class="mb-3">
+            <label class="form-label text-secondary">Company Name</label>
+            <input type="text" name="company" class="form-control bg-dark text-white border-secondary" value="<%= internship.company %>" required>
+          </div>
+
+          <!-- Duration -->
+          <div class="mb-3">
+            <label class="form-label text-secondary">Duration</label>
+            <input type="text" name="duration" class="form-control bg-dark text-white border-secondary" value="<%= internship.duration %>" required>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label class="form-label text-secondary">Description</label>
+            <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="3"><%= internship.description %></textarea>
+          </div>
+
+          <!-- 2. File Upload Field जोडले आहे -->
+          <div class="mb-4">
+            <label class="form-label text-secondary">Update Internship Certificate / Offer Letter</label>
+            
+            <% if (internship.certificate) { %>
+              <div class="mb-2">
+                <small class="text-info">Current File: </small>
+                <a href="<%= internship.certificate %>" target="_blank" class="text-warning text-decoration-none">View Current Certificate</a>
+              </div>
+            <% } %>
+
+            <input type="file" name="certificate" class="form-control bg-dark text-white border-secondary" accept="image/*,.pdf">
+            <small class="text-muted fs-7">Select a new file only if you want to replace the current one.</small>
+          </div>
+
+          <button type="submit" class="btn btn-warning w-100 fw-bold">Update Internship</button>
+          <a href="/dashboard" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

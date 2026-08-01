@@ -1,0 +1,39 @@
+<%- include("partials/header", { title: "Edit Skill" }) %>
+
+<div class="container py-5 text-white">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card bg-dark text-white border-secondary p-4 shadow">
+        <h3 class="fw-bold mb-4 text-warning">Edit Skill</h3>
+
+        <form action="/edit-skill/<%= skill.id %>" method="POST">
+          <div class="mb-3">
+            <label class="form-label text-secondary">Skill Name</label>
+            <input type="text" name="skill_name" class="form-control bg-dark text-white border-secondary" value="<%= skill.skill_name %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label text-secondary">Proficiency</label>
+            <input type="text" name="proficiency" class="form-control bg-dark text-white border-secondary" value="<%= skill.proficiency %>" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label text-secondary">Category</label>
+            <select name="category" class="form-select bg-dark text-white border-secondary" required>
+              <option value="Data Analytics" <%= skill.category === 'Data Analytics' ? 'selected' : '' %>>Data Analytics</option>
+              <option value="Programming" <%= skill.category === 'Programming' ? 'selected' : '' %>>Programming</option>
+              <option value="Web Development" <%= skill.category === 'Web Development' ? 'selected' : '' %>>Web Development</option>
+              <option value="Databases & Tools" <%= skill.category === 'Databases & Tools' ? 'selected' : '' %>>Databases & Tools</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-warning w-100 fw-bold">Update Skill</button>
+          <a href="/dashboard" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

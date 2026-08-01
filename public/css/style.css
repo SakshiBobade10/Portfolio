@@ -1,0 +1,318 @@
+
+
+/* ================= GLOBAL STYLES & VARIABLES ================= */
+:root {
+  --bg-dark: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.75);
+  --accent-primary: #6366f1;
+  --accent-secondary: #06b6d4;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ================= GLASSMORPHISM & CARDS ================= */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 35px rgba(99, 102, 241, 0.25);
+}
+
+/* ================= GRADIENTS & TEXT ================= */
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background-clip: text; /* <--- ADD THIS LINE TO FIX THE WARNING */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ================= NAVBAR ================= */
+.custom-navbar {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 14px 0;
+}
+
+.logo-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  margin-left: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-main) !important;
+}
+
+/* ================= PROFILE & HERO SECTION ================= */
+.profile-img-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-img-container::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  filter: blur(16px);
+  z-index: -1;
+  opacity: 0.6;
+}
+
+.profile-img {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border: 3px solid var(--glass-border);
+}
+
+/* ================= ADMIN SIDEBAR & DASHBOARD ================= */
+/* Sidebar Fixes */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  min-height: 100vh;
+  background: #0f172a;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.5rem 1rem;
+}
+
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #94a3b8;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.admin-link:hover, .admin-link.active {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+/* Main Content Area Fixes */
+.main-content {
+  background-color: #0b1120;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Equalized Card Sizes & Glass Style */
+.glass-stat-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.glass-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+
+/* Transform Bootstrap white cards into sleek dark glass cards */
+.main-content .card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.main-content .card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.main-content .card h4 {
+  color: #94a3b8 !important;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.main-content .card h2 {
+  color: #ffffff !important;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+/* ================= BUTTONS & BADGES ================= */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.tech-badge {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-secondary);
+  border: 1px solid var(--glass-border);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  margin: 4px;
+  display: inline-block;
+}
+
+/* Project Image Zoom Effect */
+.project-img-wrapper img {
+  transition: transform 0.4s ease;
+}
+
+.glass-card:hover .project-img-wrapper img {
+  transform: scale(1.08);
+}
+
+.logo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Prominent size that fits nicely in the navbar */
+  width: 58px;
+  height: 58px;
+  
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(59, 130, 246, 0.3); /* Slightly brighter border */
+  border-radius: 16px; 
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+
+  /* Bright white-to-blue gradient */
+  background: linear-gradient(135deg, #ffffff 0%, #3b82f6 100%);
+  background-clip: text; /* <--- ADD THIS LINE TO FIX THE WARNING */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glass Card Border Enhancement */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Core Strengths Badges - Bright Contrast */
+.strength-badge {
+  background: rgba(56, 189, 248, 0.08); /* Light transparent cyan */
+  border: 1px solid rgba(56, 189, 248, 0.3); /* Subtle cyan border */
+  color: #38bdf8 !important; /* Bright Cyan color so text stands out clearly */
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.strength-badge:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.sidebar{
+    width:260px;
+    min-height:100vh;
+    background:#1b2235;
+    padding:20px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:12px 15px;
+    margin-bottom:10px;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#0d6efd;
+    color:white;
+}
+
+/* ================= PAGE POP-UP / FADE-IN ANIMATION ================= */
+@keyframes pagePopUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Home, About आणि सर्व Sections साठी Pop-up Animation Apply करा */
+section, 
+.about-section, 
+#about, 
+#home, 
+#skills {
+  animation: pagePopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

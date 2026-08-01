@@ -1,0 +1,50 @@
+<%- include("partials/header", { title: "Edit Home Info" }) %>
+
+<div class="container py-5" style="max-width: 700px;">
+  <div class="card bg-dark text-white border-secondary shadow-lg rounded-4 p-4">
+    <h3 class="fw-bold mb-4 text-warning">
+      <i class="bi bi-house-gear me-2"></i>Edit Home Page Info
+    </h3>
+    
+    <form action="/edit-profile" method="POST">
+      
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="full_name" class="form-label text-light">Full Name</label>
+          <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="full_name" name="full_name" value="<%= profile.full_name || '' %>" required>
+        </div>
+        <div class="col-md-6">
+          <label for="role_headline" class="form-label text-light">Role / Tagline</label>
+          <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="role_headline" name="role_headline" value="<%= profile.role_headline || '' %>" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="bio" class="form-label text-light">Home Page Bio / Intro</label>
+        <textarea class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="bio" name="bio" rows="4" required><%= profile.bio || '' %></textarea>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <label for="email" class="form-label text-light">Email</label>
+          <input type="email" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="email" name="email" value="<%= profile.email || '' %>">
+        </div>
+        <div class="col-md-4">
+          <label for="github_url" class="form-label text-light">GitHub URL</label>
+          <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="github_url" name="github_url" value="<%= profile.github_url || '' %>">
+        </div>
+        <div class="col-md-4">
+          <label for="linkedin_url" class="form-label text-light">LinkedIn URL</label>
+          <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="linkedin_url" name="linkedin_url" value="<%= profile.linkedin_url || '' %>">
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <a href="/dashboard" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+        <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold">Save Home Info</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

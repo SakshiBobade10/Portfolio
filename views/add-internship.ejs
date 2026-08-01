@@ -1,0 +1,57 @@
+<%- include("partials/header", { title: "Add Internship" }) %>
+<%- include("partials/navbar") %>
+
+<div class="container text-white my-5" style="padding-top: 100px; max-width: 800px;">
+  
+  <div class="card p-4 p-md-5 rounded-4 shadow-lg" style="background-color: #0d1424 !important; border: 1px solid rgba(255, 255, 255, 0.1) !important;">
+    
+    <h2 class="fw-bold mb-4 text-center" style="color: #00d4ff;">
+      <i class="bi bi-briefcase me-2"></i>Add Internship
+    </h2>
+
+    <form action="/add-internship" method="POST" enctype="multipart/form-data">
+      
+      <!-- Company Name -->
+      <div class="mb-3">
+        <label class="form-label text-light fw-semibold">Company Name</label>
+        <input type="text" name="company_name" class="form-control bg-dark text-white border-secondary" required placeholder="e.g. Vicerium Ventures">
+      </div>
+
+      <!-- Role -->
+      <div class="mb-3">
+        <label class="form-label text-light fw-semibold">Role / Title</label>
+        <input type="text" name="role" class="form-control bg-dark text-white border-secondary" required placeholder="e.g. Web Development Intern">
+      </div>
+
+      <!-- Duration -->
+      <div class="mb-3">
+        <label class="form-label text-light fw-semibold">Duration</label>
+        <input type="text" name="duration" class="form-control bg-dark text-white border-secondary" placeholder="e.g. Nov 2025 - Dec 2025">
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label text-light fw-semibold">Description</label>
+        <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="4" placeholder="Designed and developed three responsive UI pages..."></textarea>
+      </div>
+
+      <!-- Certificate Upload -->
+      <div class="mb-4">
+        <label class="form-label text-light fw-semibold">Certificate (PDF/Image)</label>
+        <input type="file" name="certificate" class="form-control bg-dark text-white border-secondary">
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn btn-primary px-4 rounded-3 fw-bold" style="background-color: #0088ff; border: none;">
+          Save Internship
+        </button>
+        <a href="/dashboard" class="btn btn-outline-secondary px-4 rounded-3">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<%- include("partials/footer") %>

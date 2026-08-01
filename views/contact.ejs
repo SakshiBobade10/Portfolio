@@ -1,0 +1,43 @@
+<%- include("partials/header", { title: "Contact" }) %>
+<%- include("partials/navbar") %>
+
+<div class="container py-5 my-5">
+    <div class="text-center mb-5" data-aos="fade-down">
+        <h1 class="fw-bold text-gradient display-5">Get In Touch</h1>
+        <p class="text-white lead">Feel free to reach out for opportunities or collaborations</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8" data-aos="fade-up">
+            <div class="glass-card p-4 p-md-5">
+                <form action="/contact" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label text-white fw-medium">Your Name</label>
+                        <input type="text" name="name" class="form-control bg-dark text-white border-secondary" required placeholder="John Doe">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white fw-medium">Your Email</label>
+                        <input type="email" name="email" class="form-control bg-dark text-white border-secondary" required placeholder="name@example.com">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white fw-medium">Subject</label>
+                        <input type="text" name="subject" class="form-control bg-dark text-white border-secondary" placeholder="Project Inquiry">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-white fw-medium">Message</label>
+                        <textarea name="message" rows="5" class="form-control bg-dark text-white border-secondary" required placeholder="Write your message here..."></textarea>
+                    </div>
+
+                    <button class="btn btn-gradient w-100 btn-lg">
+                        <i class="bi bi-send me-2"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("partials/footer") %>

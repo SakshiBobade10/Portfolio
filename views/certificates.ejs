@@ -1,0 +1,67 @@
+<%- include("partials/header", { title: "Certificates" }) %>
+<%- include("partials/navbar") %>
+
+<div class="container py-5 my-5">
+
+    <!-- Header Section (Same as Internship Page) -->
+    <div class="text-center mb-5" data-aos="fade-down">
+        <h1 class="fw-bold text-gradient display-5">
+            Certifications
+        </h1>
+        <p class="text-white lead">
+            Validated Skills & Professional Achievements
+        </p>
+    </div>
+
+    <!-- Cards Grid Section -->
+    <div class="row g-4 justify-content-center">
+        <% if (certificates && certificates.length > 0) { %>
+            <% certificates.forEach((cert, index) => { %>
+                <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                    <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+                        
+                        <div>
+                            <!-- Title and Badge Row -->
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h3 class="fs-4 fw-bold text-white mb-1">
+                                    <%= cert.title %>
+                                </h3>
+                                <% if (cert.issue_date) { %>
+                                    <span class="badge bg-primary px-3 py-2 rounded-pill">
+                                        <%= cert.issue_date %>
+                                    </span>
+                                <% } %>
+                            </div>
+
+                            <!-- Organization Name -->
+                            <p class="text-info fw-semibold mb-3 fs-6">
+                                <%= cert.organization %>
+                            </p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-3 mt-auto">
+                            <% if (cert.certificate) { %>
+                                <a href="<%= cert.certificate %>" target="_blank" class="btn btn-outline-primary btn-sm px-4 py-2 rounded-3">
+                                    View Certificate
+                                </a>
+                            <% } else if (cert.credential_url) { %>
+                                <a href="<%= cert.credential_url %>" target="_blank" class="btn btn-outline-primary btn-sm px-4 py-2 rounded-3">
+                                    Verify Credential
+                                </a>
+                            <% } %>
+                        </div>
+
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="text-center text-secondary py-5">
+                <p class="fs-5">No certificates added yet.</p>
+            </div>
+        <% } %>
+    </div>
+
+</div>
+
+<%- include("partials/footer") %>

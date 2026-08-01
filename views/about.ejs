@@ -1,0 +1,87 @@
+<%- include("partials/header", { title: "About" }) %>
+<%- include("partials/navbar") %>
+
+<section class="about-section py-5 d-flex align-items-center min-vh-100" data-aos="fade-up" data-aos-duration="600">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      
+      <!-- Profile Picture (कमी केलेली थोडी लहान साईझ 280px) -->
+      <div class="col-lg-5 text-center" data-aos="zoom-in" data-aos-delay="100">
+        <div class="profile-img-container d-inline-block">
+          <img src="/images/profile.jpg" 
+               alt="<%= profile.full_name || 'Sakshi Bobade' %>" 
+               class="img-fluid rounded-circle shadow-lg" 
+               style="width: 280px; height: 280px; object-fit: cover;">
+        </div>
+      </div>
+
+      <!-- Right Side Content Card -->
+      <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+        <div class="p-4 p-md-5 rounded-4 shadow-lg border border-secondary border-opacity-10" style="background-color: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);">
+          
+          <!-- Title -->
+          <h2 class="display-6 fw-bold text-gradient mb-3">About Me</h2>
+
+          <!-- Dynamic Bio -->
+          <p class="fs-5 text-light mb-4" style="line-height: 1.6;">
+            Hello! I'm <strong class="text-white"><%= profile.full_name || 'Sakshi Bobade' %></strong>, 
+            <%= about.about_bio || profile.bio || 'Computer Science graduate passionate about Data Analytics, Business Intelligence, and Software Development.' %>
+          </p>
+
+          <!-- Divider Line 1 -->
+          <hr class="border-secondary opacity-25 my-4">
+
+          <!-- 2. Info Grid with Clear Visual Contrast -->
+          <div class="row g-4 mb-4">
+            
+            <!-- NAME -->
+            <div class="col-md-6">
+              <span class="d-block text-uppercase fw-semibold mb-1" style="color: #94a3b8; font-size: 0.82rem; letter-spacing: 1.5px;">NAME</span>
+              <span class="fs-6 fw-bold text-white"><%= profile.full_name || 'Sakshi Bobade' %></span>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="col-md-6">
+              <span class="d-block text-uppercase fw-semibold mb-1" style="color: #94a3b8; font-size: 0.82rem; letter-spacing: 1.5px;">EDUCATION</span>
+              <span class="fs-6 fw-bold text-white"><%= about.education || 'Bachelor of Computer Science' %></span>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="col-md-6">
+              <span class="d-block text-uppercase fw-semibold mb-1" style="color: #94a3b8; font-size: 0.82rem; letter-spacing: 1.5px;">EMAIL</span>
+              <span class="fs-6 fw-bold text-white text-break"><%= profile.email || 'sakshibobade10@gmail.com' %></span>
+            </div>
+
+            <!-- LOCATION -->
+            <div class="col-md-6">
+              <span class="d-block text-uppercase fw-semibold mb-1" style="color: #94a3b8; font-size: 0.82rem; letter-spacing: 1.5px;">LOCATION</span>
+              <span class="fs-6 fw-bold text-white"><%= about.location || 'Pune, India' %></span>
+            </div>
+
+          </div>
+
+          <!-- Divider Line 2 & Core Strengths -->
+          <% if (typeof strengths !== 'undefined' && strengths.length > 0) { %>
+            <hr class="border-secondary opacity-25 my-4">
+            
+            <h5 class="fw-bold text-info mb-3 d-flex align-items-center gap-2">
+              <i class="bi bi-stars"></i> Core Strengths
+            </h5>
+            
+            <div class="d-flex flex-wrap gap-2">
+              <% strengths.forEach(s => { %>
+                <span class="strength-badge">
+                  <%= s.title %>
+                </span>
+              <% }) %>
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

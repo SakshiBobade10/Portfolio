@@ -1,0 +1,35 @@
+<%- include("partials/header", { title: "Add Certificate" }) %>
+
+<div class="container py-5">
+    <h2 class="text-white fw-bold mb-4">Add New Certificate</h2>
+    <div class="card bg-dark text-white p-4 col-md-8 border-secondary">
+        <form action="/add-certificate" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label text-secondary">Certificate Title</label>
+                <input type="text" name="title" class="form-control bg-dark text-white border-secondary" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary">Organization</label>
+                <input type="text" name="organization" class="form-control bg-dark text-white border-secondary" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary">Issue Date</label>
+                <input type="text" name="issue_date" class="form-control bg-dark text-white border-secondary">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary">Credential Link (Optional)</label>
+                <input type="url" name="credential_url" class="form-control bg-dark text-white border-secondary">
+            </div>
+            
+            <!-- Choose File Option -->
+            <div class="mb-3">
+                <label class="form-label text-secondary">Upload Certificate Image</label>
+                <input type="file" name="certificate" class="form-control bg-dark text-white border-secondary" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Add Certificate</button>
+        </form>
+    </div>
+</div>
+
+<%- include("partials/footer") %>

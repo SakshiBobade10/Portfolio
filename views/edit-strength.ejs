@@ -1,0 +1,21 @@
+<%- include("partials/header", { title: "Edit Strength" }) %>
+
+<div class="container py-5" style="max-width: 500px;">
+  <div class="card bg-dark text-white border-secondary shadow-lg rounded-4 p-4">
+    <h3 class="fw-bold mb-4 text-warning"><i class="bi bi-pencil-square me-2"></i>Edit Strength</h3>
+    
+    <form action="/edit-strength/<%= strength.id %>" method="POST">
+      <div class="mb-4">
+        <label for="title" class="form-label text-light">Strength Title</label>
+        <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="title" name="title" value="<%= strength.title %>" required>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <a href="/dashboard" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+        <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold">Update Strength</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

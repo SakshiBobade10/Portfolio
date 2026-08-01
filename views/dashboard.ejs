@@ -1,0 +1,435 @@
+<%- include("partials/header", { title: "Admin Dashboard" }) %>
+
+<style>
+  .admin-wrapper {
+    min-height: 100vh;
+    background: #0b0f17;
+    color: #e2e8f0;
+  }
+  .sidebar-link {
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-link:hover, .sidebar-link.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #38bdf8;
+  }
+  .stat-card {
+    background: #131b2e;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    transition: transform 0.2s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+  }
+  .custom-nav-pills .nav-link {
+    color: #94a3b8;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .custom-nav-pills .nav-link.active {
+    background: #1e293b;
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+  .dashboard-card {
+    background: #131b2e;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .table-custom {
+    color: #e2e8f0;
+    margin-bottom: 0;
+  }
+  .table-custom th {
+    background: #1a233a;
+    color: #64748b;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 20px;
+  }
+  .table-custom td {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+</style>
+
+<div class="d-flex admin-wrapper">
+
+  <!-- Sidebar -->
+  <div class="p-3 border-end border-secondary border-opacity-10 d-flex flex-column justify-content-between" style="width: 260px; background: #0f172a;">
+    <div>
+      <div class="px-3 py-3 mb-3 border-bottom border-secondary border-opacity-10">
+        <h4 class="fw-bold text-white m-0 d-flex align-items-center gap-2">
+          <i class="bi bi-shield-lock text-info"></i> Portfolio Admin
+        </h4>
+      </div>
+
+      <nav class="d-flex flex-column gap-1">
+        <a href="/dashboard" class="sidebar-link active"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+
+        <!-- Edit Profile & Home Info Link -->
+        <a href="/edit-profile" class="sidebar-link"><i class="bi bi-house-gear text-warning"></i> Edit Home Info</a>
+        <a href="/edit-about" class="sidebar-link"><i class="bi bi-person-gear text-info"></i> Edit About Info</a>
+        <a href="/add-project" class="sidebar-link"><i class="bi bi-folder-plus text-info"></i> Add Project</a>
+        <a href="/add-internship" class="sidebar-link"><i class="bi bi-briefcase text-success"></i> Add Internship</a>
+        <a href="/add-certificate" class="sidebar-link"><i class="bi bi-patch-check text-warning"></i> Add Certificate</a>
+        <a href="/add-skill" class="sidebar-link"><i class="bi bi-cpu text-primary"></i> Add Skill</a>
+        
+        <!-- Add Strength Link -->
+        <a href="/add-strength" class="sidebar-link"><i class="bi bi-star text-danger"></i> Add Strength</a>
+        <a href="/admin/contacts" class="sidebar-link"><i class="bi bi-envelope-open text-info"></i> View Messages</a>
+      </nav>
+    </div>
+
+    <div>
+      <a href="/logout" class="sidebar-link text-danger border border-danger border-opacity-25 rounded-3 mt-3 justify-content-center">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-grow-1 p-4 p-md-5 overflow-auto">
+
+    <!-- Top Greeting Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold mb-1">Welcome back, Sakshi 👋</h2>
+        <p class="text-secondary small mb-0">Centralized dashboard to modify and feature your latest achievements.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="/edit-profile" class="btn btn-outline-warning btn-sm rounded-pill px-3">
+          <i class="bi bi-house-gear me-1"></i> Edit Home Info
+        </a>
+        <a href="/edit-about" class="btn btn-outline-info btn-sm rounded-pill px-3">
+          <i class="bi bi-person-gear me-1"></i> Edit About Info
+        </a>
+
+        <a href="/admin/contacts" class="btn btn-outline-info btn-sm rounded-pill px-3">
+          <i class="bi bi-envelope me-1"></i> Messages 
+          <span class="badge bg-info text-dark ms-1"><%= messages ? messages.length : 0 %></span>
+        </a>
+        
+        <a href="/" target="_blank" class="btn btn-outline-light btn-sm rounded-pill px-3">
+          <i class="bi bi-box-arrow-up-right me-1"></i> View Live Site
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Analytics Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md">
+        <div class="stat-card d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small d-block mb-1">Projects</span>
+            <h3 class="fw-bold m-0 text-info"><%= projects ? projects.length : 0 %></h3>
+          </div>
+          <div class="p-3 bg-info bg-opacity-10 rounded-circle text-info">
+            <i class="bi bi-folder fs-4"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="stat-card d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small d-block mb-1">Certificates</span>
+            <h3 class="fw-bold m-0 text-warning"><%= certificates ? certificates.length : 0 %></h3>
+          </div>
+          <div class="p-3 bg-warning bg-opacity-10 rounded-circle text-warning">
+            <i class="bi bi-award fs-4"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="stat-card d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small d-block mb-1">Internships</span>
+            <h3 class="fw-bold m-0 text-success"><%= internships ? internships.length : 0 %></h3>
+          </div>
+          <div class="p-3 bg-success bg-opacity-10 rounded-circle text-success">
+            <i class="bi bi-briefcase fs-4"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="stat-card d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small d-block mb-1">Skills</span>
+            <h3 class="fw-bold m-0 text-primary"><%= skills ? skills.length : 0 %></h3>
+          </div>
+          <div class="p-3 bg-primary bg-opacity-10 rounded-circle text-primary">
+            <i class="bi bi-lightning-charge fs-4"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Strengths Analytics Card -->
+      <div class="col-md">
+        <div class="stat-card d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small d-block mb-1">Strengths</span>
+            <h3 class="fw-bold m-0 text-danger"><%= typeof strengths !== 'undefined' && strengths ? strengths.length : 0 %></h3>
+          </div>
+          <div class="p-3 bg-danger bg-opacity-10 rounded-circle text-danger">
+            <i class="bi bi-star fs-4"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🟢 Messages Analytics Card (नवीन जोडलेला भाग) -->
+      <div class="col-md">
+        <a href="/admin/contacts" class="text-decoration-none">
+          <div class="stat-card d-flex align-items-center justify-content-between h-100 border border-info border-opacity-25 hover-card">
+            <div>
+              <span class="text-secondary small d-block mb-1">Messages</span>
+              <h3 class="fw-bold m-0 text-info"><%= messages ? messages.length : 0 %></h3>
+            </div>
+            <div class="p-3 bg-info bg-opacity-10 rounded-circle text-info">
+              <i class="bi bi-envelope-fill fs-4"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Tabbed Content Section -->
+    <div class="dashboard-card p-3">
+      
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-pills custom-nav-pills gap-2 mb-3 border-bottom border-secondary border-opacity-10 pb-3" id="adminTabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link active" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects" type="button">Projects</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="certificates-tab" data-bs-toggle="tab" data-bs-target="#certificates" type="button">Certificates</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="internships-tab" data-bs-toggle="tab" data-bs-target="#internships" type="button">Internships</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button">Skills</button>
+        </li>
+        <!-- Strengths Tab Header -->
+        <li class="nav-item">
+          <button class="nav-link" id="strengths-tab" data-bs-toggle="tab" data-bs-target="#strengths" type="button">Strengths</button>
+        </li>
+      </ul>
+
+      <!-- Tab Windows -->
+      <div class="tab-content" id="adminTabsContent">
+
+        <!-- 1. PROJECTS TAB -->
+        <div class="tab-pane fade show active" id="projects" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2">
+            <h5 class="fw-bold m-0 text-white">All Projects</h5>
+            <a href="/add-project" class="btn btn-info btn-sm rounded-pill px-3">+ Add Project</a>
+          </div>
+          <div class="table-responsive rounded-3">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Technologies</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (projects && projects.length > 0) { %>
+                  <% projects.forEach(p => { %>
+                    <tr>
+                      <td class="fw-semibold"><%= p.title %></td>
+                      <td><span class="badge bg-dark border border-secondary text-info px-2 py-1"><%= p.technology %></span></td>
+                      <td class="text-end">
+                        <a href="/edit-project/<%= p.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
+                        <a href="/delete-project/<%= p.id %>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Delete project?')">Delete</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="3" class="text-center text-muted py-4">No Projects Added Yet</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. CERTIFICATES TAB -->
+        <div class="tab-pane fade" id="certificates" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2">
+            <h5 class="fw-bold m-0 text-white">All Certificates</h5>
+            <a href="/add-certificate" class="btn btn-warning btn-sm rounded-pill px-3">+ Add Certificate</a>
+          </div>
+          <div class="table-responsive rounded-3">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Organization</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (certificates && certificates.length > 0) { %>
+                  <% certificates.forEach(c => { %>
+                    <tr>
+                      <td class="fw-semibold"><%= c.title %></td>
+                      <td><%= c.organization %></td>
+                      <td class="text-end">
+                        <a href="/edit-certificate/<%= c.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
+                        <a href="/delete-certificate/<%= c.id %>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Delete certificate?')">Delete</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="3" class="text-center text-muted py-4">No Certificates Added Yet</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. INTERNSHIPS TAB -->
+        <div class="tab-pane fade" id="internships" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2">
+            <h5 class="fw-bold m-0 text-white">All Internships</h5>
+            <a href="/add-internship" class="btn btn-success btn-sm rounded-pill px-3">+ Add Internship</a>
+          </div>
+          <div class="table-responsive rounded-3">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Role</th>
+                  <th>Duration</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (internships && internships.length > 0) { %>
+                  <% internships.forEach(i => { %>
+                    <tr>
+                      <td class="fw-semibold"><%= i.company %></td>
+                      <td><%= i.role %></td>
+                      <td><span class="badge bg-dark text-white px-3 py-2 border border-secondary fw-normal"><%= i.duration %></span></td>
+                      <td class="text-end">
+                        <a href="/edit-internship/<%= i.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
+                        <a href="/delete-internship/<%= i.id %>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Delete internship?')">Delete</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="4" class="text-center text-muted py-4">No Internships Added Yet</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4. SKILLS TAB -->
+        <div class="tab-pane fade" id="skills" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2">
+            <h5 class="fw-bold m-0 text-white">All Skills</h5>
+            <a href="/add-skill" class="btn btn-primary btn-sm rounded-pill px-3">+ Add Skill</a>
+          </div>
+          <div class="table-responsive rounded-3">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Skill Name</th>
+                  <th style="width: 25%;">Category</th>
+                  <th style="width: 25%;">Proficiency</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (skills && skills.length > 0) { %>
+                  <% skills.forEach(s => { %>
+                    <tr>
+                      <td class="fw-semibold text-dark"><%= s.skill_name %></td>
+                      
+                      <!-- Category Badge (Fixed Width & Center Aligned) -->
+                      <td>
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 py-2 w-75 d-inline-block text-center fw-semibold">
+                          <%= s.category %>
+                        </span>
+                      </td>
+
+                      <!-- Proficiency Badge (Fixed Width, Visible Text & Same Size) -->
+                      <td>
+                        <span class="badge bg-secondary bg-opacity-10 text-dark border border-secondary border-opacity-50 py-2 w-75 d-inline-block text-center fw-semibold">
+                          <%= s.proficiency %>
+                        </span>
+                      </td>
+
+                      <td class="text-end">
+                        <a href="/edit-skill/<%= s.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
+                        <a href="/delete-skill/<%= s.id %>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Delete skill?')">Delete</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="4" class="text-center text-muted py-4">No Skills Added Yet</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+<!-- 5. STRENGTHS TAB -->
+        <div class="tab-pane fade" id="strengths" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2">
+            <h5 class="fw-bold m-0 text-white">All Strengths</h5>
+            <a href="/add-strength" class="btn btn-danger btn-sm rounded-pill px-3">+ Add Strength</a>
+          </div>
+          <div class="table-responsive rounded-3">
+            <table class="table table-custom align-middle">
+              <thead>
+                <tr>
+                  <th>Strength Title</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (typeof strengths !== 'undefined' && strengths && strengths.length > 0) { %>
+                  <% strengths.forEach(st => { %>
+                    <tr>
+                      <!-- 🟢 इथे आपण सर्व Column नावे तपासली आहेत, ज्यामुळे टेक्स्ट दिसेल -->
+                      <td class="fw-bold text-dark"><%= st.title || st.strength || st.name || st.strength_name || 'Strength Item' %></td>
+                      <td class="text-end">
+                        <a href="/edit-strength/<%= st.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
+                        <a href="/delete-strength/<%= st.id %>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Delete strength?')">Delete</a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr><td colspan="2" class="text-center text-muted py-4">No Strengths Added Yet</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%- include("partials/footer") %>
