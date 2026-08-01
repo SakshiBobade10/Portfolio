@@ -131,7 +131,7 @@ app.post("/contact", (req, res) => {
                 service: "gmail",
                 auth: {
                     user: "sakshibobade10@gmail.com",
-                    pass: "sjfq aztq dxsx vxoa" // तुमचा App Password
+                    pass: "sjfq aztq dxsx vxoa" //  App Password
                 },
                 tls: {
                     rejectUnauthorized: false
@@ -139,10 +139,10 @@ app.post("/contact", (req, res) => {
             });
 
             const mailOptions = {
-                // Sender च्या नावात "Portfolio Contact" दिसेल
+                //  "Portfolio Contact" 
                 from: `"Portfolio Contact Form" <sakshibobade10@gmail.com>`,
                 to: "sakshibobade10@gmail.com",
-                replyTo: email, // Reply केल्यावर थेट युझरला मेल जाईल
+                replyTo: email, 
                 subject: `New Portfolio Message: ${subject || 'Inquiry'}`,
                 html: `
                     <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; max-width: 600px;">

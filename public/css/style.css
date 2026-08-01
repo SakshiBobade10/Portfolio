@@ -46,7 +46,7 @@ body {
 /* ================= GRADIENTS & TEXT ================= */
 .text-gradient {
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  background-clip: text; /* <--- ADD THIS LINE TO FIX THE WARNING */
+  background-clip: text; 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -241,7 +241,7 @@ body {
 
   /* Bright white-to-blue gradient */
   background: linear-gradient(135deg, #ffffff 0%, #3b82f6 100%);
-  background-clip: text; /* <--- ADD THIS LINE TO FIX THE WARNING */
+  background-clip: text; 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -308,11 +308,11 @@ body {
   }
 }
 
-/* Home, About आणि सर्व Sections साठी Pop-up Animation Apply करा */
-section, 
-.about-section, 
-#about, 
-#home, 
+/* Home, About Section */
+section,
+.about-section,
+#about,
+#home,
 #skills {
-  animation: pagePopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: pagePopUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

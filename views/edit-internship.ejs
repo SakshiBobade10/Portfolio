@@ -6,7 +6,7 @@
       <div class="card bg-dark text-white border-secondary p-4 shadow">
         <h3 class="fw-bold mb-4 text-warning">Edit Internship</h3>
 
-        <!-- 1. enctype="multipart/form-data" जोडले आहे -->
+        <!-- 1. enctype="multipart/form-data" -->
         <form action="/edit-internship/<%= internship.id %>" method="POST" enctype="multipart/form-data">
           <!-- Role -->
           <div class="mb-3">
@@ -32,7 +32,7 @@
             <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="3"><%= internship.description %></textarea>
           </div>
 
-          <!-- 2. File Upload Field जोडले आहे -->
+          <!-- 2. File Upload Field -->
           <div class="mb-4">
             <label class="form-label text-secondary">Update Internship Certificate / Offer Letter</label>
             

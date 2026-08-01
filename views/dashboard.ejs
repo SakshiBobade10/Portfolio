@@ -190,7 +190,7 @@
         </div>
       </div>
 
-      <!-- 🟢 Messages Analytics Card (नवीन जोडलेला भाग) -->
+      <!--  Messages Analytics Card  -->
       <div class="col-md">
         <a href="/admin/contacts" class="text-decoration-none">
           <div class="stat-card d-flex align-items-center justify-content-between h-100 border border-info border-opacity-25 hover-card">
@@ -362,14 +362,14 @@
                     <tr>
                       <td class="fw-semibold text-dark"><%= s.skill_name %></td>
                       
-                      <!-- Category Badge (Fixed Width & Center Aligned) -->
+                      <!-- Category Badge  -->
                       <td>
                         <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 py-2 w-75 d-inline-block text-center fw-semibold">
                           <%= s.category %>
                         </span>
                       </td>
 
-                      <!-- Proficiency Badge (Fixed Width, Visible Text & Same Size) -->
+                      <!-- Proficiency Badge -->
                       <td>
                         <span class="badge bg-secondary bg-opacity-10 text-dark border border-secondary border-opacity-50 py-2 w-75 d-inline-block text-center fw-semibold">
                           <%= s.proficiency %>
@@ -408,7 +408,7 @@
                 <% if (typeof strengths !== 'undefined' && strengths && strengths.length > 0) { %>
                   <% strengths.forEach(st => { %>
                     <tr>
-                      <!-- 🟢 इथे आपण सर्व Column नावे तपासली आहेत, ज्यामुळे टेक्स्ट दिसेल -->
+                    
                       <td class="fw-bold text-dark"><%= st.title || st.strength || st.name || st.strength_name || 'Strength Item' %></td>
                       <td class="text-end">
                         <a href="/edit-strength/<%= st.id %>" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-1">Edit</a>
