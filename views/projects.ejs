@@ -1,7 +1,7 @@
 <%- include("partials/header", { title: "Projects" }) %>
 <%- include("partials/navbar") %>
 
-<!-- Hover/Popup Effect  CSS -->
+<!-- Hover/Popup Effect CSS -->
 <style>
   .project-card-interactive {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
@@ -12,12 +12,6 @@
     background-color: #121c33 !important;
     border-color: rgba(0, 136, 255, 0.4) !important;
     box-shadow: 0 12px 30px rgba(0, 136, 255, 0.2) !important;
-  }
-  
-  /*  CSS */
-  .row.g-4 {
-    display: flex;
-    flex-wrap: wrap;
   }
 </style>
 
@@ -58,10 +52,12 @@
         </div>
       </div>
 
-      <!-- Project Cards Grid with Hover Animation -->
+      <!-- Project Cards Grid -->
       <div class="row g-4 mb-5">
         <% groupedProjects[category].forEach(function(p, index) { %>
-         <div class="col-lg-6 col-12 mb-4" data-aos="fade-up" data-aos-delay="<%= index * 100 %>"></div>
+          
+          <!-- Column Container -->
+          <div class="col-lg-6 col-12" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
             
             <div class="card h-100 p-4 rounded-4 shadow-lg d-flex flex-column justify-content-between project-card-interactive" style="background-color: #0d1424 !important; border: 1px solid rgba(255, 255, 255, 0.08) !important;">
               
@@ -101,7 +97,8 @@
               <% } %>
 
             </div>
-          </div>
+          </div> <!-- Column End -->
+
         <% }); %>
       </div>
 
