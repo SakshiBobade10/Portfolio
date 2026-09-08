@@ -6,7 +6,8 @@
       <i class="bi bi-house-gear me-2"></i>Edit Home Page Info
     </h3>
     
-    <form action="/edit-profile" method="POST">
+    <!-- enctype="multipart/form-data" जोडणे आवश्यक आहे -->
+    <form action="/edit-profile" method="POST" enctype="multipart/form-data">
       
       <div class="row g-3 mb-3">
         <div class="col-md-6">
@@ -22,6 +23,24 @@
       <div class="mb-3">
         <label for="bio" class="form-label text-light">Home Page Bio / Intro</label>
         <textarea class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="bio" name="bio" rows="4" required><%= profile.bio || '' %></textarea>
+      </div>
+
+      <!-- नवीन जोडेलेले: Photo आणि Resume Upload Fields -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="profile_pic" class="form-label text-light">Profile Picture</label>
+          <input type="file" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="profile_pic" name="profile_pic" accept="image/*">
+          <% if(profile.profile_pic) { %>
+            <small class="text-success">✔ Profile picture currently uploaded</small>
+          <% } %>
+        </div>
+        <div class="col-md-6">
+          <label for="resume" class="form-label text-light">Resume (PDF)</label>
+          <input type="file" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="resume" name="resume" accept=".pdf">
+          <% if(profile.resume) { %>
+            <small class="text-success">✔ Resume PDF currently uploaded</small>
+          <% } %>
+        </div>
       </div>
 
       <div class="row g-3 mb-4">
