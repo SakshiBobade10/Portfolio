@@ -13,6 +13,12 @@
     border-color: rgba(0, 136, 255, 0.4) !important;
     box-shadow: 0 12px 30px rgba(0, 136, 255, 0.2) !important;
   }
+  
+  /*  CSS */
+  .row.g-4 {
+    display: flex;
+    flex-wrap: wrap;
+  }
 </style>
 
 <!-- Header Section -->
@@ -55,7 +61,7 @@
       <!-- Project Cards Grid with Hover Animation -->
       <div class="row g-4 mb-5">
         <% groupedProjects[category].forEach(function(p, index) { %>
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+          <div class="col-6 col-md-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>"></div>
             
             <div class="card h-100 p-4 rounded-4 shadow-lg d-flex flex-column justify-content-between project-card-interactive" style="background-color: #0d1424 !important; border: 1px solid rgba(255, 255, 255, 0.08) !important;">
               
