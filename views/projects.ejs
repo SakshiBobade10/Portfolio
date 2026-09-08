@@ -1,113 +1,161 @@
 <%- include("partials/header", { title: "Projects" }) %>
 <%- include("partials/navbar") %>
 
-<!-- Hover/Popup Effect CSS -->
+<!-- CSS Custom Styling for Image Design -->
 <style>
-  .project-card-interactive {
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-    cursor: pointer;
+  body {
+    background-color: #030712 !important;
   }
-  .project-card-interactive:hover {
-    transform: translateY(-8px) scale(1.02) !important;
-    background-color: #121c33 !important;
-    border-color: rgba(0, 136, 255, 0.4) !important;
-    box-shadow: 0 12px 30px rgba(0, 136, 255, 0.2) !important;
+
+  .project-card-custom {
+    background-color: #070d19 !important;
+    border: 1px solid rgba(0, 150, 255, 0.2) !important;
+    border-radius: 16px !important;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .project-card-custom:hover {
+    border-color: rgba(0, 180, 255, 0.5) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 140, 255, 0.15);
+  }
+
+  /* Top Category Pill/Badge Style */
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    background: rgba(0, 150, 255, 0.08);
+    color: #00d4ff;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  /* Technology Badges Style */
+  .tech-badge {
+    background: transparent;
+    border: 1px solid rgba(0, 150, 255, 0.3);
+    color: #00b0ff;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  /* Full Width Pill Buttons Style */
+  .btn-code-pill {
+    width: 100%;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 150, 255, 0.4);
+    background: transparent;
+    color: #00b0ff;
+    padding: 8px 0;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-code-pill:hover {
+    background: rgba(0, 150, 255, 0.15);
+    color: #ffffff;
+    border-color: #00b0ff;
   }
 </style>
 
-<!-- Header Section -->
-<div class="container text-white" style="padding-top: 130px; padding-bottom: 80px;">
+<!-- Main Container -->
+<div class="container text-white" style="padding-top: 120px; padding-bottom: 80px;">
   
-  <!-- Title with Matching Internship Style -->
-  <div class="text-center mb-5" data-aos="fade-down">
-    <h1 class="fw-bold display-4 mb-2" style="color: #3882f6 !important; font-weight: 700;">
+  <!-- Page Header Title -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold display-4 mb-2" style="color: #2b7fff; font-weight: 800;">
       My Projects
     </h1>
     <p class="text-secondary lead fs-6">Showcasing my technical journey, core builds, and practical implementations.</p>
   </div>
 
-  <% 
-    let groupedProjects = {};
-    if (typeof projects !== 'undefined' && projects.length > 0) {
-      projects.forEach(function(p) {
-        let cat = p.category ? p.category.trim() : 'Other Projects';
-        if (!groupedProjects[cat]) {
-          groupedProjects[cat] = [];
-        }
-        groupedProjects[cat].push(p);
-      });
-    }
-  %>
-
-  <% if (Object.keys(groupedProjects).length > 0) { %>
-    <% Object.keys(groupedProjects).forEach(function(category) { %>
-      
-      <!-- Domain / Category Heading -->
-      <div class="mb-4 mt-4" data-aos="fade-right">
-        <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.25);">
-          <i class="bi bi-folder2-open fs-4" style="color: #00d4ff !important;"></i>
-          <h3 class="fw-bold mb-0 fs-4" style="color: #00d4ff !important; letter-spacing: 0.5px;">
-            <%= category %>
-          </h3>
-        </div>
-      </div>
-
-      <!-- Project Cards Grid -->
-      <div class="row g-4 mb-5">
-        <% groupedProjects[category].forEach(function(p, index) { %>
-          
-          <!-- Column Container -->
-          <div class="col-lg-6 col-12" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+  <!-- Projects Grid (Side-by-Side Cards) -->
+  <div class="row g-4">
+    <% if (typeof projects !== 'undefined' && projects.length > 0) { %>
+      <% projects.forEach(function(p) { %>
+        
+        <div class="col-lg-6 col-12">
+          <div class="card h-100 p-4 project-card-custom d-flex flex-column justify-content-between">
             
-            <div class="card h-100 p-4 rounded-4 shadow-lg d-flex flex-column justify-content-between project-card-interactive" style="background-color: #0d1424 !important; border: 1px solid rgba(255, 255, 255, 0.08) !important;">
-              
-              <div>
-                <h4 class="fw-bold text-white mb-2" style="font-size: 1.3rem;"><%= p.title %></h4>
-                
-                <p class="text-secondary small mb-3" style="font-size: 0.92rem; line-height: 1.6; color: #a0aec0 !important;">
-                  <%= p.description %>
-                </p>
+            <div>
+              <!-- Top Left Category Pill -->
+              <div class="mb-3">
+                <span class="category-pill">
+                  <% if (p.category && (p.category.toLowerCase().includes('sql') || p.category.toLowerCase().includes('database'))) { %>
+                    <i class="bi bi-database"></i>
+                  <% } else if (p.category && p.category.toLowerCase().includes('excel')) { %>
+                    <i class="bi bi-file-earmark-excel"></i>
+                  <% } else { %>
+                    <i class="bi bi-code-slash"></i>
+                  <% } %>
+                  <%= p.category ? p.category : 'Project' %>
+                </span>
+              </div>
 
-                <% if (p.technology) { %>
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <% p.technology.split(',').forEach(function(tech) { %>
-                      <span class="badge px-3 py-2 rounded-pill" style="background-color: rgba(0, 136, 255, 0.15); color: #00aaff; border: 1px solid rgba(0, 136, 255, 0.3); font-weight: 500; font-size: 11px;">
-                        <%= tech.trim() %>
-                      </span>
-                    <% }); %>
+              <!-- Project Title -->
+              <h3 class="fw-bold text-white mb-3" style="font-size: 1.4rem;">
+                <%= p.title %>
+              </h3>
+
+              <!-- Project Description -->
+              <p class="text-secondary mb-4" style="font-size: 0.92rem; line-height: 1.6; color: #94a3b8 !important;">
+                <%= p.description %>
+              </p>
+
+              <!-- Tech Stack Badges -->
+              <% if (p.technology) { %>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                  <% p.technology.split(',').forEach(function(tech) { %>
+                    <span class="tech-badge">
+                      <%= tech.trim() %>
+                    </span>
+                  <% }); %>
+                </div>
+              <% } %>
+            </div>
+
+            <!-- Action Buttons (Code / Demo) -->
+            <div class="pt-2">
+              <div class="row g-2">
+                <% if (p.github_link && p.github_link.trim() !== '') { %>
+                  <div class="<%= (p.demo_link && p.demo_link.trim() !== '') ? 'col-6' : 'col-12' %>">
+                    <a href="<%= p.github_link %>" target="_blank" class="btn-code-pill">
+                      <i class="bi bi-github"></i> Code
+                    </a>
+                  </div>
+                <% } %>
+
+                <% if (p.demo_link && p.demo_link.trim() !== '') { %>
+                  <div class="<%= (p.github_link && p.github_link.trim() !== '') ? 'col-6' : 'col-12' %>">
+                    <a href="<%= p.demo_link %>" target="_blank" class="btn-code-pill" style="background: rgba(0, 150, 255, 0.2); border-color: #00b0ff; color: #fff;">
+                      <i class="bi bi-box-arrow-up-right"></i> Live Demo
+                    </a>
                   </div>
                 <% } %>
               </div>
-
-              <!-- Action Buttons -->
-              <% if ((p.github_link && p.github_link.trim() !== '') || (p.demo_link && p.demo_link.trim() !== '')) { %>
-                <div class="d-flex gap-2 pt-3 border-top border-secondary border-opacity-25 mt-2">
-                  <% if (p.github_link && p.github_link.trim() !== '') { %>
-                    <a href="<%= p.github_link %>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 flex-grow-1" style="border-color: #0088ff; color: #0088ff;">
-                      <i class="bi bi-github me-1"></i> Code
-                    </a>
-                  <% } %>
-
-                  <% if (p.demo_link && p.demo_link.trim() !== '') { %>
-                    <a href="<%= p.demo_link %>" target="_blank" class="btn btn-sm rounded-pill px-3 flex-grow-1 fw-bold" style="background-color: #0088ff; color: #fff;">
-                      <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
-                    </a>
-                  <% } %>
-                </div>
-              <% } %>
-
             </div>
-          </div> <!-- Column End -->
 
-        <% }); %>
+          </div>
+        </div>
+
+      <% }); %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <p class="text-muted fs-5">No projects found. Add projects from your Admin Dashboard!</p>
       </div>
-
-    <% }); %>
-  <% } else { %>
-    <div class="text-center py-5" data-aos="fade-up">
-      <p class="text-muted fs-5">No projects found. Add projects from your Admin Dashboard!</p>
-    </div>
-  <% } %>
+    <% } %>
+  </div>
 
 </div>
 
