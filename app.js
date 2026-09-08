@@ -546,23 +546,52 @@ app.get("/edit-profile", (req, res) => {
     });
 });
 
-app.post("/edit-profile", (req, res) => {
+app.post("/edit-profile", upload.fields([
+    { name: "profile_pic", maxCount: 1 },
+    { name: "resume", maxCount: 1 }
+]), (req, res) => {
     if (!req.session.admin) return res.redirect("/login");
 
     const { full_name, role_headline, bio, email, github_url, linkedin_url } = req.body;
 
-    const sql = `
-        UPDATE site_info 
-        SET full_name=?, role_headline=?, bio=?, email=?, github_url=?, linkedin_url=? 
-        WHERE id=1
-    `;
-    
-    db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url], (err) => {
-        if (err) {
-            console.error("❌ HOME PAGE UPDATE ERROR:", err);
-            return res.send("Database Error: " + err.message);
+    db.query("SELECT profile_pic, resume FROM site_info WHERE id = 1", (err, result) => {
+        if (err) return res.send("Database Error: " + err.message);
+
+        let profilePicPath = result.length && result[0].profile_pic ? result[0].profile_pic : null;
+        let resumePath = result.length && result[0].resume ? result[0].resume : null;
+
+        if (req.files && req.files["profile_pic"]) {
+            profilePicPath = "/uploads/" + req.files["profile_pic"][0].filename;
         }
-        res.redirect("/dashboard");
+
+        if (req.files && req.files["resume"]) {
+            resumePath = "/uploads/" + req.files["resume"][0].filename;
+        }
+
+        const sql = `
+            UPDATE site_info 
+            SET full_name=?, role_headline=?, bio=?, email=?, github_url=?, linkedin_url=?, profile_pic=?, resume=? 
+            WHERE id=1
+        `;
+
+        db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profilePicPath, resumePath], (err) => {
+            if (err) {
+                console.error("❌ HOME PAGE UPDATE ERROR:", err);
+                return res.send("Database Error: " + err.message);
+            }
+            res.redirect("/dashboard");
+        });
+    });
+});
+
+// Resume direct download/view करण्यासााठी
+app.get("/resume", (req, res) => {
+    db.query("SELECT resume FROM site_info WHERE id = 1", (err, result) => {
+        if (err || !result.length || !result[0].resume) {
+            return res.send("❌ Resume not found. Edit Profile मधून अपलोड करा.");
+        }
+        const resumePath = path.join(__dirname, result[0].resume);
+        res.sendFile(resumePath);
     });
 });
 
