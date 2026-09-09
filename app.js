@@ -591,20 +591,26 @@ app.get("/resume", (req, res) => {
             return res.send("❌ Resume not found. Edit Profile मधून नवीन PDF अपलोड करा.");
         }
 
-        const resumePath = path.join(__dirname, result[0].resume);
+        // Database मधील पाथ घेणे
+        let resumePath = result[0].resume;
 
-        // १. फाईल अस्तित्वात आहे की नाही ते तपासा
-        const fs = require("fs");
-        if (!fs.existsSync(resumePath)) {
-            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. पुन्हा अपलोड करा.");
+        // पाथच्या सुरुवातीला / असेल तर तो काढणे
+        if (resumePath.startsWith("/")) {
+            resumePath = resumePath.substring(1);
         }
 
-        // २. ब्राऊझरमध्ये Direct PDF Open (Inline View) होण्यासाठी Headers सेट करा
+        const fullPath = path.join(__dirname, resumePath);
+
+        const fs = require("fs");
+        if (!fs.existsSync(fullPath)) {
+            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया एडिट प्रोफाइलमधून पुन्हा अपलोड करा.");
+        }
+
+        // PDF ब्राऊझरमध्ये Direct Preview आणि Download साठी
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader("Content-Disposition", "inline; filename=Resume.pdf");
 
-        // ३. PDF ब्राऊझरला दाखवा
-        res.sendFile(resumePath);
+        res.sendFile(fullPath);
     });
 });
 
