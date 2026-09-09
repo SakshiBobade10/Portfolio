@@ -6,9 +6,16 @@ const nodemailer = require("nodemailer");
 
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs"); // ✅ 1. fs Module जोडले आहे
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+// ✅ 2. uploads फोल्डर नसल्यास ते आपोआप तयार होईल
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Multer Storage Configuration
 const storage = multer.diskStorage({
@@ -24,7 +31,7 @@ const upload = multer({ storage: storage });
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -131,7 +138,7 @@ app.post("/contact", (req, res) => {
                 service: "gmail",
                 auth: {
                     user: "sakshibobade10@gmail.com",
-                    pass: "sjfq aztq dxsx vxoa" //  App Password
+                    pass: "sjfq aztq dxsx vxoa" // App Password
                 },
                 tls: {
                     rejectUnauthorized: false
@@ -139,7 +146,6 @@ app.post("/contact", (req, res) => {
             });
 
             const mailOptions = {
-                //  "Portfolio Contact" 
                 from: `"Portfolio Contact Form" <sakshibobade10@gmail.com>`,
                 to: "sakshibobade10@gmail.com",
                 replyTo: email, 
@@ -241,7 +247,7 @@ app.get("/internship", (req, res) => {
 
 app.post("/add-internship", upload.single("certificate"), (req, res) => {
     const { company, role, duration, description } = req.body;
-    const certificate = req.file ? "/uploads/" + req.file.filename : null;
+    const certificate = req.file ? "uploads/" + req.file.filename : null;
 
     const sql = `
         INSERT INTO internships (company, role, duration, description, certificate)
@@ -297,7 +303,7 @@ app.get("/add-certificate", (req, res) => {
 
 app.post("/add-certificate", upload.single("certificate"), (req, res) => {
     const { title, organization, issue_date, credential_url } = req.body;
-    const certificate = req.file ? "/uploads/" + req.file.filename : null;
+    const certificate = req.file ? "uploads/" + req.file.filename : null;
 
     const sql = "INSERT INTO certificates (title, organization, issue_date, credential_url, certificate) VALUES (?, ?, ?, ?, ?)";
     
@@ -488,7 +494,7 @@ app.post("/edit-certificate/:id", upload.single("certificate"), (req, res) => {
     const { title, organization, issue_date, credential_url } = req.body;
 
     if (req.file) {
-        const certificateImage = "/uploads/" + req.file.filename;
+        const certificateImage = "uploads/" + req.file.filename;
         const sql = "UPDATE certificates SET title=?, organization=?, issue_date=?, credential_url=?, certificate=? WHERE id=?";
         db.query(sql, [title, organization, issue_date, credential_url, certificateImage, req.params.id], (err) => {
             if (err) console.error("❌ CERTIFICATE UPDATE ERROR:", err);
@@ -516,7 +522,7 @@ app.post("/edit-internship/:id", upload.single("certificate"), (req, res) => {
     const { company, role, duration, description } = req.body;
 
     if (req.file) {
-        const certificateImage = "/uploads/" + req.file.filename;
+        const certificateImage = "uploads/" + req.file.filename;
         const sql = "UPDATE internships SET company=?, role=?, duration=?, description=?, certificate=? WHERE id=?";
         db.query(sql, [company, role, duration, description, certificateImage, req.params.id], (err) => {
             if (err) console.error("❌ INTERNSHIP UPDATE ERROR:", err);
@@ -558,6 +564,7 @@ app.post("/edit-profile", upload.fields([
         let profile_pic = results[0]?.profile_pic || '';
         let resume = results[0]?.resume || '';
 
+        // Windows Slashing (\) फिक्स
         if (req.files && req.files['profile_pic'] && req.files['profile_pic'][0]) {
             profile_pic = req.files['profile_pic'][0].path.replace(/\\/g, "/");
         }
@@ -579,7 +586,7 @@ app.post("/edit-profile", upload.fields([
 });
 
 
-// Resume direct download/view करण्यासााठी
+// ✅ 3. Resume Inline Preview व Download चा फिक्स केलेला Route
 app.get("/resume", (req, res) => {
     db.query("SELECT resume FROM site_info WHERE id = 1", (err, result) => {
         if (err || !result.length || !result[0].resume) {
@@ -587,11 +594,10 @@ app.get("/resume", (req, res) => {
         }
 
         let resumePath = result[0].resume;
-        const fullPath = path.join(__dirname, resumePath);
+        const fullPath = path.resolve(__dirname, resumePath);
 
-        const fs = require("fs");
         if (!fs.existsSync(fullPath)) {
-            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया पुन्हा अपलोड करा.");
+            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया एडिट प्रोफाइलमधून पुन्हा अपलोड करा.");
         }
 
         res.setHeader("Content-Type", "application/pdf");
