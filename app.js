@@ -547,37 +547,46 @@ app.get("/edit-profile", (req, res) => {
 });
 
 app.post("/edit-profile", upload.fields([
-    { name: "profile_pic", maxCount: 1 },
-    { name: "resume", maxCount: 1 }
+    { name: 'profile_pic', maxCount: 1 },
+    { name: 'resume', maxCount: 1 }
 ]), (req, res) => {
-    if (!req.session.admin) return res.redirect("/login");
-
     const { full_name, role_headline, bio, email, github_url, linkedin_url } = req.body;
 
-    db.query("SELECT profile_pic, resume FROM site_info WHERE id = 1", (err, result) => {
-        if (err) return res.send("Database Error: " + err.message);
-
-        let profilePicPath = result.length && result[0].profile_pic ? result[0].profile_pic : null;
-        let resumePath = result.length && result[0].resume ? result[0].resume : null;
-
-        if (req.files && req.files["profile_pic"]) {
-            profilePicPath = "/uploads/" + req.files["profile_pic"][0].filename;
+    // जुना डेटा डेटाबेसमधून आणा
+    db.query("SELECT * FROM site_info WHERE id = 1", (err, results) => {
+        if (err) {
+            console.error("Database Fetch Error:", err);
+            return res.status(500).send("Database error occurred.");
         }
 
-        if (req.files && req.files["resume"]) {
-            resumePath = "/uploads/" + req.files["resume"][0].filename;
+        let profile_pic = results[0]?.profile_pic || '';
+        let resume = results[0]?.resume || '';
+
+        // नवीन प्रोफाइल फोटो आला असेल तर अपडेट करा
+        if (req.files && req.files['profile_pic'] && req.files['profile_pic'][0]) {
+            profile_pic = req.files['profile_pic'][0].path.replace(/\\/g, "/");
         }
 
-        const sql = `
-            UPDATE site_info 
-            SET full_name=?, role_headline=?, bio=?, email=?, github_url=?, linkedin_url=?, profile_pic=?, resume=? 
-            WHERE id=1
-        `;
+        // नवीन Resume आला असेल तर अपडेट करा
+        if (req.files && req.files['resume'] && req.files['resume'][0]) {
+            resume = req.files['resume'][0].path.replace(/\\/g, "/");
+        }
 
-        db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profilePicPath, resumePath], (err) => {
+        const sql = `UPDATE site_info SET 
+            full_name = ?, 
+            role_headline = ?, 
+            bio = ?, 
+            email = ?, 
+            github_url = ?, 
+            linkedin_url = ?, 
+            profile_pic = ?, 
+            resume = ? 
+            WHERE id = 1`;
+
+        db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profile_pic, resume], (err, result) => {
             if (err) {
-                console.error("❌ HOME PAGE UPDATE ERROR:", err);
-                return res.send("Database Error: " + err.message);
+                console.error("Database Update Error:", err);
+                return res.status(500).send("Failed to update database.");
             }
             res.redirect("/dashboard");
         });
@@ -591,28 +600,20 @@ app.get("/resume", (req, res) => {
             return res.send("❌ Resume not found. Edit Profile मधून नवीन PDF अपलोड करा.");
         }
 
-        // Database मधील पाथ घेणे
         let resumePath = result[0].resume;
-
-        // पाथच्या सुरुवातीला / असेल तर तो काढणे
-        if (resumePath.startsWith("/")) {
-            resumePath = resumePath.substring(1);
-        }
-
         const fullPath = path.join(__dirname, resumePath);
 
         const fs = require("fs");
         if (!fs.existsSync(fullPath)) {
-            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया एडिट प्रोफाइलमधून पुन्हा अपलोड करा.");
+            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया पुन्हा अपलोड करा.");
         }
 
-        // PDF ब्राऊझरमध्ये Direct Preview आणि Download साठी
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader("Content-Disposition", "inline; filename=Resume.pdf");
-
         res.sendFile(fullPath);
     });
 });
+
 
 app.get("/edit-about", (req, res) => {
     if (!req.session.admin) return res.redirect("/login");
