@@ -552,6 +552,8 @@ app.get("/edit-profile", (req, res) => {
     });
 });
 
+
+// EDIT PROFILE POST ROUTE
 app.post("/edit-profile", upload.fields([
     { name: 'profile_pic', maxCount: 1 },
     { name: 'resume', maxCount: 1 }
@@ -564,13 +566,13 @@ app.post("/edit-profile", upload.fields([
         let profile_pic = results[0]?.profile_pic || '';
         let resume = results[0]?.resume || '';
 
-        // Windows Slashing (\) फिक्स
+        // नवी फाईल अपलोड झाली असल्यास पाथ अपडेट करा
         if (req.files && req.files['profile_pic'] && req.files['profile_pic'][0]) {
-            profile_pic = req.files['profile_pic'][0].path.replace(/\\/g, "/");
+            profile_pic = "uploads/" + req.files['profile_pic'][0].filename;
         }
 
         if (req.files && req.files['resume'] && req.files['resume'][0]) {
-            resume = req.files['resume'][0].path.replace(/\\/g, "/");
+            resume = "uploads/" + req.files['resume'][0].filename;
         }
 
         const sql = `UPDATE site_info SET 
@@ -579,14 +581,16 @@ app.post("/edit-profile", upload.fields([
             WHERE id = 1`;
 
         db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profile_pic, resume], (err, result) => {
-            if (err) return res.status(500).send("Update Failed");
+            if (err) {
+                console.error("❌ UPDATE ERROR:", err);
+                return res.status(500).send("Update Failed");
+            }
             res.redirect("/dashboard");
         });
     });
 });
 
-
-// ✅ 3. Resume Inline Preview व Download चा फिक्स केलेला Route
+// RESUME PREVIEW ROUTE
 app.get("/resume", (req, res) => {
     db.query("SELECT resume FROM site_info WHERE id = 1", (err, result) => {
         if (err || !result.length || !result[0].resume) {
@@ -594,7 +598,7 @@ app.get("/resume", (req, res) => {
         }
 
         let resumePath = result[0].resume;
-        const fullPath = path.resolve(__dirname, resumePath);
+        const fullPath = path.join(__dirname, resumePath);
 
         if (!fs.existsSync(fullPath)) {
             return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया एडिट प्रोफाइलमधून पुन्हा अपलोड करा.");
@@ -605,7 +609,6 @@ app.get("/resume", (req, res) => {
         res.sendFile(fullPath);
     });
 });
-
 
 app.get("/edit-about", (req, res) => {
     if (!req.session.admin) return res.redirect("/login");
