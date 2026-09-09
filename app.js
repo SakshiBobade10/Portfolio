@@ -561,29 +561,27 @@ app.post("/edit-profile", upload.fields([
     const { full_name, role_headline, bio, email, github_url, linkedin_url } = req.body;
 
     db.query("SELECT * FROM site_info WHERE id = 1", (err, results) => {
-        if (err) return res.status(500).send("Database Error");
-
-        let profile_pic = results[0]?.profile_pic || '';
-        let resume = results[0]?.resume || '';
-
-        // नवी फाईल अपलोड झाली असल्यास पाथ अपडेट करा
-        if (req.files && req.files['profile_pic'] && req.files['profile_pic'][0]) {
-            profile_pic = "uploads/" + req.files['profile_pic'][0].filename;
+        if (err) {
+            console.error("❌ DB SELECT ERROR:", err);
+            return res.status(500).send("Database Error: " + err.message);
         }
 
+        let resume = (results && results.length > 0) ? results[0].resume_url : '';
+
+        // नवीन फाईल अपलोड झाली असल्यास
         if (req.files && req.files['resume'] && req.files['resume'][0]) {
             resume = "uploads/" + req.files['resume'][0].filename;
         }
 
-        const sql = `UPDATE site_info SET 
+        const updateSql = `UPDATE site_info SET 
             full_name = ?, role_headline = ?, bio = ?, email = ?, 
-            github_url = ?, linkedin_url = ?, profile_pic = ?, resume = ? 
+            github_url = ?, linkedin_url = ?, resume_url = ? 
             WHERE id = 1`;
 
-        db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profile_pic, resume], (err, result) => {
+        db.query(updateSql, [full_name, role_headline, bio, email, github_url, linkedin_url, resume], (err) => {
             if (err) {
                 console.error("❌ UPDATE ERROR:", err);
-                return res.status(500).send("Update Failed");
+                return res.status(500).send("Update Failed: " + err.message);
             }
             res.redirect("/dashboard");
         });
@@ -592,12 +590,12 @@ app.post("/edit-profile", upload.fields([
 
 // RESUME PREVIEW ROUTE
 app.get("/resume", (req, res) => {
-    db.query("SELECT resume FROM site_info WHERE id = 1", (err, result) => {
-        if (err || !result.length || !result[0].resume) {
+    db.query("SELECT resume_url FROM site_info WHERE id = 1", (err, result) => {
+        if (err || !result.length || !result[0].resume_url) {
             return res.send("❌ Resume not found. Edit Profile मधून नवीन PDF अपलोड करा.");
         }
 
-        let resumePath = result[0].resume;
+        let resumePath = result[0].resume_url;
         const fullPath = path.join(__dirname, resumePath);
 
         if (!fs.existsSync(fullPath)) {
