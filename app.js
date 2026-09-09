@@ -552,46 +552,32 @@ app.post("/edit-profile", upload.fields([
 ]), (req, res) => {
     const { full_name, role_headline, bio, email, github_url, linkedin_url } = req.body;
 
-    // जुना डेटा डेटाबेसमधून आणा
     db.query("SELECT * FROM site_info WHERE id = 1", (err, results) => {
-        if (err) {
-            console.error("Database Fetch Error:", err);
-            return res.status(500).send("Database error occurred.");
-        }
+        if (err) return res.status(500).send("Database Error");
 
         let profile_pic = results[0]?.profile_pic || '';
         let resume = results[0]?.resume || '';
 
-        // नवीन प्रोफाइल फोटो आला असेल तर अपडेट करा
         if (req.files && req.files['profile_pic'] && req.files['profile_pic'][0]) {
             profile_pic = req.files['profile_pic'][0].path.replace(/\\/g, "/");
         }
 
-        // नवीन Resume आला असेल तर अपडेट करा
         if (req.files && req.files['resume'] && req.files['resume'][0]) {
             resume = req.files['resume'][0].path.replace(/\\/g, "/");
         }
 
         const sql = `UPDATE site_info SET 
-            full_name = ?, 
-            role_headline = ?, 
-            bio = ?, 
-            email = ?, 
-            github_url = ?, 
-            linkedin_url = ?, 
-            profile_pic = ?, 
-            resume = ? 
+            full_name = ?, role_headline = ?, bio = ?, email = ?, 
+            github_url = ?, linkedin_url = ?, profile_pic = ?, resume = ? 
             WHERE id = 1`;
 
         db.query(sql, [full_name, role_headline, bio, email, github_url, linkedin_url, profile_pic, resume], (err, result) => {
-            if (err) {
-                console.error("Database Update Error:", err);
-                return res.status(500).send("Failed to update database.");
-            }
+            if (err) return res.status(500).send("Update Failed");
             res.redirect("/dashboard");
         });
     });
 });
+
 
 // Resume direct download/view करण्यासााठी
 app.get("/resume", (req, res) => {
