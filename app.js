@@ -588,9 +588,22 @@ app.post("/edit-profile", upload.fields([
 app.get("/resume", (req, res) => {
     db.query("SELECT resume FROM site_info WHERE id = 1", (err, result) => {
         if (err || !result.length || !result[0].resume) {
-            return res.send("❌ Resume not found. Edit Profile मधून अपलोड करा.");
+            return res.send("❌ Resume not found. Edit Profile मधून नवीन PDF अपलोड करा.");
         }
+
         const resumePath = path.join(__dirname, result[0].resume);
+
+        // १. फाईल अस्तित्वात आहे की नाही ते तपासा
+        const fs = require("fs");
+        if (!fs.existsSync(resumePath)) {
+            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. पुन्हा अपलोड करा.");
+        }
+
+        // २. ब्राऊझरमध्ये Direct PDF Open (Inline View) होण्यासाठी Headers सेट करा
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "inline; filename=Resume.pdf");
+
+        // ३. PDF ब्राऊझरला दाखवा
         res.sendFile(resumePath);
     });
 });
