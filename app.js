@@ -6,12 +6,12 @@ const nodemailer = require("nodemailer");
 
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs"); // ✅ 1. fs Module जोडले आहे
+const fs = require("fs"); // 
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// ✅ 2. uploads फोल्डर नसल्यास ते आपोआप तयार होईल
+
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -129,7 +129,7 @@ app.post("/contact", (req, res) => {
 
     db.query(sql, [name, email, subject, message], async (err) => {
         if (err) {
-            console.error("❌ DATABASE INSERT ERROR:", err);
+            console.error(" DATABASE INSERT ERROR:", err);
             return res.send("Database Error: " + err.message);
         }
 
@@ -172,7 +172,7 @@ app.post("/contact", (req, res) => {
             console.log("✅ Mail sent successfully!");
 
         } catch (mailErr) {
-            console.error("❌ MAIL SENDING ERROR:", mailErr);
+            console.error(" MAIL SENDING ERROR:", mailErr);
         }
 
         res.send("✅ Message Sent Successfully!");
@@ -599,8 +599,8 @@ app.get("/resume", (req, res) => {
         const fullPath = path.join(__dirname, resumePath);
 
         if (!fs.existsSync(fullPath)) {
-            return res.send("❌ Resume फाईल सर्व्हरवर सापडली नाही. कृपया एडिट प्रोफाइलमधून पुन्हा अपलोड करा.");
-        }
+    return res.send("❌ Resume file not found on the server. Please re-upload it from Edit Profile.");
+}
 
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader("Content-Disposition", "inline; filename=Resume.pdf");
